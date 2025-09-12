@@ -7,6 +7,7 @@ let cliente = {
 const btnGuardarCliente = document.querySelector('#guardar-cliente');
 btnGuardarCliente.addEventListener('click', guardarCliente);
 
+// Funciones
 function guardarCliente() {
     const mesa = document.querySelector('#mesa').value;
     const hora = document.querySelector('#hora').value;
@@ -40,4 +41,12 @@ function guardarCliente() {
     const modalBootstrap = bootstrap.Modal.getInstance(modalFormulario);
     modalBootstrap.hide();
 
+
+    // Mostrar las secciones
+    mostrarSecciones();
+}
+
+function mostrarSecciones(){
+    const seccionesOcultas = document.querySelectorAll('.d-none');
+    seccionesOcultas.forEach(seccion => seccion.classList.remove('d-none'));
 }
