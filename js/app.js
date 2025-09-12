@@ -4,9 +4,16 @@ let cliente = {
     pedido: []
 };
 
+const categorias = {
+    1: 'Comida',
+    2: 'Bebidas',
+    3: 'Postres'
+}
+
 const btnGuardarCliente = document.querySelector('#guardar-cliente');
 btnGuardarCliente.addEventListener('click', guardarCliente);
 
+// Funciones
 function guardarCliente() {
     const mesa = document.querySelector('#mesa').value;
     const hora = document.querySelector('#hora').value;
@@ -30,5 +37,61 @@ function guardarCliente() {
             }, 3000);
         }
         return;
-    } 
+    }
+    
+    // Asignar datos del formulario a cliente
+    cliente = { ...cliente, mesa, hora }
+
+    // Ocultar Modal
+    const modalFormulario = document.querySelector('#formulario');
+    const modalBootstrap = bootstrap.Modal.getInstance(modalFormulario);
+    modalBootstrap.hide();
+
+
+    // Mostrar las secciones
+    mostrarSecciones();
+
+    // Obtener Platillos de la API de JSON-Server
+    obtenerPlatillos();
+}
+
+function mostrarSecciones(){
+    const seccionesOcultas = document.querySelectorAll('.d-none');
+    seccionesOcultas.forEach(seccion => seccion.classList.remove('d-none'));
+}
+
+function obtenerPlatillos(){
+    const url = 'http://localhost:4000/platillos';
+
+    fetch(url)
+        .then( respuesta => respuesta.json() )
+        .then( resultado => mostrarPlatillos(resultado) )
+        .catch( error => console.log(error));   
+}
+
+function mostrarPlatillos(platillos) {
+    const contenido = document.querySelector('#platillos .contenido');
+
+    platillos.forEach(platillo => {
+        const row = document.createElement('DIV');
+        row.classList.add('row', 'py-3', 'border-top');
+
+        const nombre = document.createElement('DIV');
+        nombre.classList.add('col-md-4');
+        nombre.textContent = platillo.nombre;
+
+        const precio = document.createElement('DIV');
+        precio.classList.add('col-md-3', 'fw-bold');
+        precio.textContent = `$${platillo.precio}`;
+
+        const categoria = document.createElement('DIV');
+        categoria.classList.add('col-md-3');
+        categoria.textContent = categorias[platillo.categoria];
+
+        row.appendChild(nombre);
+        row.appendChild(precio);
+        row.appendChild(categoria);
+
+        contenido.appendChild(row);
+    })
 }
