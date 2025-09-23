@@ -136,8 +136,125 @@ function agregarPlatillo(producto){
             cliente.pedido = [...pedido, producto];
         }
     }else{
-        console.log('no es mayor a 0');
+        // Eliminar elementos cuando la cantidad es 0
+        const resultado = pedido.filter( articulo => articulo.id !== producto.id);
+        cliente.pedido = [...resultado];
     }
+    //Limpiar HTML previo
+    limpiarHTML();
 
-    console.log(cliente.pedido);
+    // Mostrar el resumen
+    actualizarResumen();
+}
+
+function actualizarResumen(){
+    const contenido = document.querySelector('#resumen .contenido');
+
+    const resumen = document.createElement('DIV');
+    resumen.classList.add('col-md-6', 'card', 'py-5', 'px-3', 'shadow');
+
+     // Informacion mesa
+    const mesa = document.createElement('P');
+    mesa.textContent = 'Mesa: ';
+    mesa.classList.add('fw-bold');
+
+    const mesaSpan = document.createElement('SPAN');
+    mesaSpan.textContent = cliente.mesa;
+    mesaSpan.classList.add('fw-normal');
+
+     // Informacion de hora
+    const hora = document.createElement('P');
+    hora.textContent = 'Hora: ';
+    hora.classList.add('fw-bold');
+
+   
+    const horaSpan = document.createElement('SPAN');
+    horaSpan.textContent = cliente.hora;
+    horaSpan.classList.add('fw-normal');
+
+    // Agregar a los elementos padre
+    mesa.appendChild(mesaSpan);
+    hora.appendChild(horaSpan);
+
+    // Titulo de la seccion
+    const heading = document.createElement('H3');
+    heading.textContent = 'Platillos Consumidos';
+    heading.classList.add('my-4', 'text-center');
+
+    //Iterar sobre el array de pedidos
+    const grupo = document.createElement('UL');
+    grupo.classList.add('list-group');
+
+    const { pedido } = cliente;
+    pedido.forEach( articulo => {
+        const { nombre, cantidad, precio, id } = articulo;
+
+        const lista = document.createElement('LI');
+        lista.classList.add('list-group-item');
+
+        const nombreElemento = document.createElement('H4');
+        nombreElemento.classList.add('my-4');
+        nombreElemento.textContent = nombre;
+
+        // Cantidad del articulo
+        const cantidadElemento = document.createElement('P');
+        cantidadElemento.classList.add('fw-bold');
+        cantidadElemento.textContent = 'Cantidad: ';
+
+        const cantidadValor = document.createElement('SPAN');
+        cantidadValor.classList.add('fw-normal');
+        cantidadValor.textContent = cantidad;
+
+        // Precio del articulo
+        const precioElemento = document.createElement('P');
+        precioElemento.classList.add('fw-normal');
+        precioElemento.textContent = 'Precio: ';
+
+        const precioValor = document.createElement('SPAN');
+        precioValor.classList.add('fw-normal');
+        precioValor.textContent = `$${precio}`;
+     
+        // Subtotal del articulo
+        const subtotalElemento = document.createElement('P');
+        subtotalElemento.classList.add('fw-normal');
+        subtotalElemento.textContent = 'Subtotal: ';
+
+        const subtotalValor = document.createElement('SPAN');
+        subtotalValor.classList.add('fw-normal');
+        subtotalValor.textContent = calcularSubtotal(precio, cantidad);         
+
+        // Agregar Valores a sus contenedores
+        cantidadElemento.appendChild(cantidadValor);
+        precioElemento.appendChild(precioValor);
+        subtotalElemento.appendChild(subtotalValor);
+
+        // agregar elementos al li
+        lista.appendChild(nombreElemento);
+        lista.appendChild(cantidadElemento);
+        lista.appendChild(precioElemento);
+        lista.appendChild(subtotalElemento);
+
+        // agregar lista al grupo principal
+        grupo.appendChild(lista);
+    })
+
+    //Agregar al contenido
+    resumen.appendChild(mesa);
+    resumen.appendChild(hora);
+    resumen.appendChild(heading);
+    resumen.appendChild(grupo);
+
+    contenido.appendChild(resumen);
+}
+
+function limpiarHTML(){
+    const contenido = document.querySelector('#resumen .contenido');
+
+    while(contenido.firstChild) {
+        contenido.removeChild(contenido.firstChild);
+    }
+}
+
+function calcularSubtotal(precio, cantidad) {
+    return `$${precio * cantidad}`;
 }
