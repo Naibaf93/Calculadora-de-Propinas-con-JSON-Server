@@ -221,7 +221,14 @@ function actualizarResumen(){
 
         const subtotalValor = document.createElement('SPAN');
         subtotalValor.classList.add('fw-normal');
-        subtotalValor.textContent = calcularSubtotal(precio, cantidad);         
+        subtotalValor.textContent = calcularSubtotal(precio, cantidad);
+        
+        //Boton eliminar
+        const btnEliminar = document.createElement('BUTTON');
+        btnEliminar.classList.add('btn', 'btn-danger');
+        btnEliminar.textContent = 'Eliminar pedido';
+
+        // Funcion para eliminar del pedido
 
         // Agregar Valores a sus contenedores
         cantidadElemento.appendChild(cantidadValor);
@@ -233,6 +240,7 @@ function actualizarResumen(){
         lista.appendChild(cantidadElemento);
         lista.appendChild(precioElemento);
         lista.appendChild(subtotalElemento);
+        lista.appendChild(btnEliminar);
 
         // agregar lista al grupo principal
         grupo.appendChild(lista);
