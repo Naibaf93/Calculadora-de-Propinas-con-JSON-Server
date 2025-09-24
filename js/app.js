@@ -229,6 +229,9 @@ function actualizarResumen(){
         btnEliminar.textContent = 'Eliminar pedido';
 
         // Funcion para eliminar del pedido
+        btnEliminar.onclick = function() {
+            eliminarProducto(id);
+        }
 
         // Agregar Valores a sus contenedores
         cantidadElemento.appendChild(cantidadValor);
@@ -265,4 +268,16 @@ function limpiarHTML(){
 
 function calcularSubtotal(precio, cantidad) {
     return `$${precio * cantidad}`;
+}
+
+function eliminarProducto(id) {
+    const { pedido } = cliente;
+    const resultado = pedido.filter( articulo => articulo.id !== id);
+    cliente.pedido = [...resultado];
+
+    //Limpiar HTML previo
+    limpiarHTML();
+
+    // Mostrar el resumen
+    actualizarResumen();
 }
