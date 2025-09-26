@@ -411,4 +411,58 @@ function calcularPropina(){
     // Calcular el total a pagar
 
     const total = subTotal + propina;
+
+    mostrarTotalHTML(subTotal, total, propina);
+}
+
+function mostrarTotalHTML(subTotal, total, propina){
+
+    const divTotales = document.createElement('DIV');
+    divTotales.classList.add('total-pagar', 'my-5');
+
+    // Subtotal
+    const subTotalParrafo = document.createElement('P');
+    subTotalParrafo.classList.add('fs-4', 'fw-bold', 'mt-2');
+    subTotalParrafo.textContent = 'Subtotal consumo: ';
+
+    const subTotalSpan = document.createElement('SPAN');
+    subTotalSpan.classList.add('fw-normal');
+    subTotalSpan.textContent = `$${subTotal}`;
+
+    subTotalParrafo.appendChild(subTotalSpan);
+
+    // Propina
+    const propinaParrafo = document.createElement('P');
+    propinaParrafo.classList.add('fs-4', 'fw-bold', 'mt-2');
+    propinaParrafo.textContent = 'Propina: ';
+
+    const propinaSpan = document.createElement('SPAN');
+    propinaSpan.classList.add('fw-normal');
+    propinaSpan.textContent = `$${propina}`;
+
+    propinaParrafo.appendChild(propinaSpan);
+
+    // Propina
+    const totalParrafo = document.createElement('P');
+    totalParrafo.classList.add('fs-4', 'fw-bold', 'mt-2');
+    totalParrafo.textContent = 'Propina: ';
+
+    const totalSpan = document.createElement('SPAN');
+    totalSpan.classList.add('fw-normal');
+    totalSpan.textContent = `$${total}`;
+
+    totalParrafo.appendChild(totalSpan);
+
+    // Eliminar ultimo resultado
+    const totalPagarDiv = document.querySelector('.total-pagar');
+    if(totalPagarDiv) {
+        totalPagarDiv.remove();
+    }
+
+    divTotales.appendChild(subTotalParrafo);
+    divTotales.appendChild(propinaParrafo);
+    divTotales.appendChild(totalParrafo)
+
+    const formulario = document.querySelector('.formulario > div');
+    formulario.appendChild(divTotales);
 }
